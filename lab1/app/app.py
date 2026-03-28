@@ -7,6 +7,9 @@ fake = Faker()
 app = Flask(__name__)
 application = app
 
+app.config['APPLICATION_ROOT'] = '/rvp/lab1'
+app.config['PREFERRED_URL_SCHEME'] = 'https'
+
 images_ids = ['7d4e9175-95ea-4c5f-8be5-92a6b708bb3c',
               '2d2ab7df-cdbc-48a8-a936-35bba702def5',
               '6e12f3de-d5fd-4ebb-855b-8cbc485278b7',

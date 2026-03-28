@@ -4,6 +4,8 @@ import re
 app = Flask(__name__)
 app.secret_key = 'your-secret-key-here'
 
+app.config['APPLICATION_ROOT'] = '/rvp/lab2'
+app.config['PREFERRED_URL_SCHEME'] = 'https'
 
 @app.route('/')
 def index():

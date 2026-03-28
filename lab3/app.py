@@ -4,6 +4,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your-secret-key-here-change-in-production'
+app.config['APPLICATION_ROOT'] = '/rvp/lab3'
+app.config['PREFERRED_URL_SCHEME'] = 'https'
 
 login_manager = LoginManager()
 login_manager.init_app(app)
