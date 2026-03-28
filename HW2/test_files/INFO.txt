@@ -1,0 +1,26 @@
+Test Files Directory
+
+This directory contains test files for testing file operations.
+
+Structure:
+
+Root Level Files:
+- test1.txt - Text file with 7 lines for testing file reading
+- test2.py - Python file with simple function
+- data.json - JSON file with sample data structure
+- readme.md - Markdown file with headers and lists
+- file_a.txt, file_b.py, file_c.md, file_d.json - Files for testing sorting by extension
+
+Subdirectories:
+- subdir1/ - Contains nested.txt for testing recursive search
+- subdir2/ - Contains deep.log for testing deep search
+
+Used By:
+- file_search.py - Tests recursive file search functionality
+- files_sort.py - Tests file sorting by extension
+- log_decorator.py - Uses this directory for log file output during tests
+
+Test Log Files:
+During test execution, temporary log files are created:
+- test_log1.txt through test_log5.txt
+These files are automatically cleaned up after tests complete.

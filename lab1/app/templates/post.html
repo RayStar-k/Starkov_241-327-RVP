@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <article>
+        <h1 class="my-4">{{ post.title }}</h1>
+
+        <p class="text-muted">
+            Опубликовано {{ post.date.strftime('%d.%m.%Y') }}. Автор: {{ post.author }}
+        </p>
+
+        <img class="img-fluid rounded mb-4" src="{{ url_for('static', filename='images/' + post.image_id) }}" alt="{{ post.title }}">
+
+        <div class="post-text mb-5">
+            {{ post.text }}
+        </div>
+    </article>
+
+    <hr>
+
+    <section class="comments-section mb-5">
+        <h3 class="mb-4">Оставьте комментарий</h3>
+        <form class="mb-5">
+            <div class="mb-3">
+                <label for="commentText" class="form-label">Текст комментария</label>
+                <textarea class="form-control" id="commentText" rows="3" placeholder="Введите ваш комментарий здесь..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Отправить</button>
+        </form>
+
+        <h3 class="mb-4">Комментарии</h3>
+
+        {% macro render_comment(comment, is_reply=false) %}
+            <div class="card mb-3 {% if is_reply %}ms-5{% endif %}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ comment.author }}</h5>
+                    <p class="card-text">{{ comment.text }}</p>
+
+                    {% if comment.replies %}
+                        <div class="replies mt-3">
+                            {% for reply in comment.replies %}
+                                {{ render_comment(reply, is_reply=true) }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endmacro %}
+
+        {% if post.comments %}
+            {% for comment in post.comments %}
+                {{ render_comment(comment) }}
+            {% endfor %}
+        {% else %}
+            <p class="text-muted">Комментариев пока нет. Будьте первым!</p>
+        {% endif %}
+    </section>
+{% endblock %}

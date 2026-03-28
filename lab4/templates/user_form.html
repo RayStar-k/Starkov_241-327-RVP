@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% macro render_field(name, label, type='text', required=False, errors=[], value='') %}
+<div class="mb-3">
+    <label for="{{ name }}" class="form-label">{{ label }}{% if required %} <span class="text-danger">*</span>{% endif %}</label>
+    <input type="{{ type }}"
+           class="form-control {% if errors %}is-invalid{% endif %}"
+           id="{{ name }}"
+           name="{{ name }}"
+           value="{{ value }}"
+           {% if required %}required{% endif %}>
+    {% if errors %}
+        {% for error in errors %}
+        <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+{% endmacro %}
+
+{% macro render_select(name, label, options, selected='', errors=[], required=False) %}
+<div class="mb-3">
+    <label for="{{ name }}" class="form-label">{{ label }}{% if required %} <span class="text-danger">*</span>{% endif %}</label>
+    <select class="form-select {% if errors %}is-invalid{% endif %}" id="{{ name }}" name="{{ name }}">
+        <option value="">Выберите роль</option>
+        {% for option in options %}
+        <option value="{{ option.id }}" {% if selected == option.id|string %}selected{% endif %}>
+            {{ option.name }}
+        </option>
+        {% endfor %}
+    </select>
+    {% if errors %}
+        {% for error in errors %}
+        <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+{% endmacro %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <h1 class="my-4 text-center">{{ title }}</h1>
+
+        <div class="card">
+            <div class="card-body">
+                <form method="POST">
+                    {% if not is_edit %}
+                    {{ render_field('login', 'Логин', required=True, errors=errors.get('login', []), value=form_data.get('login', '')) }}
+                    {{ render_field('password', 'Пароль', type='password', required=True, errors=errors.get('password', []), value='') }}
+                    {% endif %}
+
+                    {{ render_field('last_name', 'Фамилия', required=False, errors=errors.get('last_name', []), value=form_data.get('last_name', '')) }}
+                    {{ render_field('first_name', 'Имя', required=True, errors=errors.get('first_name', []), value=form_data.get('first_name', '')) }}
+                    {{ render_field('middle_name', 'Отчество', required=False, errors=errors.get('middle_name', []), value=form_data.get('middle_name', '')) }}
+
+                    {{ render_select('role_id', 'Роль', roles, selected=form_data.get('role_id', ''), errors=errors.get('role_id', []), required=False) }}
+
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                        <a href="{{ url_for('index') }}" class="btn btn-secondary">Отмена</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        {% if not is_edit %}
+        <div class="card mt-3">
+            <div class="card-body">
+                <h5 class="card-title">Требования к полям</h5>
+                <p class="card-text mb-2"><strong>Логин:</strong></p>
+                <ul class="small">
+                    <li>Только латинские буквы и цифры</li>
+                    <li>Минимум 5 символов</li>
+                </ul>
+                <p class="card-text mb-2"><strong>Пароль:</strong></p>
+                <ul class="small">
+                    <li>От 8 до 128 символов</li>
+                    <li>Минимум одна заглавная и одна строчная буква</li>
+                    <li>Только латинские или кириллические буквы (не вместе)</li>
+                    <li>Минимум одна цифра</li>
+                    <li>Без пробелов</li>
+                    <li>Допустимые специальные символы: ~ ! ? @ # $ % ^ & * _ - + ( ) [ ] { } > < / \ | " ' . , : ;</li>
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

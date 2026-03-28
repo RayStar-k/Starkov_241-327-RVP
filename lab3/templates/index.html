@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="my-5 text-center">Добро пожаловать!</h1>
+
+        {% if current_user.is_authenticated %}
+        <div class="alert alert-success" role="alert">
+            <h4 class="alert-heading">Успешный вход!</h4>
+            <p>Вы успешно вошли в систему как пользователь <strong>{{ current_user.id }}</strong>.</p>
+        </div>
+        {% endif %}
+
+        <div class="card my-4">
+            <div class="card-header">
+                <h3>Лабораторная работа №3</h3>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Веб-приложение на Flask</h5>
+                <p class="card-text">Данное приложение демонстрирует следующий функционал:</p>
+                <ul>
+                    <li><strong>Счётчик посещений</strong> - отслеживание количества посещений страницы с использованием сессий</li>
+                    <li><strong>Аутентификация пользователей</strong> - механизм входа с использованием Flask-Login</li>
+                    <li><strong>Секретная страница</strong> - доступ только для аутентифицированных пользователей</li>
+                </ul>
+
+                {% if not current_user.is_authenticated %}
+                <div class="mt-4">
+                    <p>Для доступа к секретной странице необходимо <a href="{{ url_for('login') }}" class="btn btn-primary">Войти</a></p>
+                    <p class="text-muted mt-2">Логин: <code>user</code>, Пароль: <code>qwerty</code></p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

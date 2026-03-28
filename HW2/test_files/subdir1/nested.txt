@@ -1,0 +1,5 @@
+This is a nested file
+In subdirectory 1
+For testing recursive search
+Line 4
+Line 5
