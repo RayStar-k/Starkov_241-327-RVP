@@ -1,6 +1,7 @@
 import random
 from flask import Flask, render_template
 from faker import Faker
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 fake = Faker()
 
@@ -9,6 +10,8 @@ application = app
 
 app.config['APPLICATION_ROOT'] = '/rvp/lab1'
 app.config['PREFERRED_URL_SCHEME'] = 'https'
+
+app.wsgi_app = ProxyFix(app.wsgi_app, x_prefix=1)
 
 images_ids = ['7d4e9175-95ea-4c5f-8be5-92a6b708bb3c',
               '2d2ab7df-cdbc-48a8-a936-35bba702def5',

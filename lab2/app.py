@@ -1,4 +1,5 @@
 from flask import Flask, request, render_template, redirect, url_for, make_response
+from werkzeug.middleware.proxy_fix import ProxyFix
 import re
 
 app = Flask(__name__)
@@ -6,6 +7,8 @@ app.secret_key = 'your-secret-key-here'
 
 app.config['APPLICATION_ROOT'] = '/rvp/lab2'
 app.config['PREFERRED_URL_SCHEME'] = 'https'
+
+app.wsgi_app = ProxyFix(app.wsgi_app, x_prefix=1)
 
 @app.route('/')
 def index():

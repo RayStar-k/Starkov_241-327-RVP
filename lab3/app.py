@@ -1,11 +1,14 @@
 from flask import Flask, render_template, session, redirect, url_for, request, flash
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your-secret-key-here-change-in-production'
 app.config['APPLICATION_ROOT'] = '/rvp/lab3'
 app.config['PREFERRED_URL_SCHEME'] = 'https'
+
+app.wsgi_app = ProxyFix(app.wsgi_app, x_prefix=1)
 
 login_manager = LoginManager()
 login_manager.init_app(app)

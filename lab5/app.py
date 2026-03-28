@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+from werkzeug.middleware.proxy_fix import ProxyFix
 from config import Config
 from models import db, User, Role, VisitLog
 from validators import validate_user_form, validate_password
@@ -8,6 +9,8 @@ from sqlalchemy.exc import IntegrityError
 
 app = Flask(__name__)
 app.config.from_object(Config)
+
+app.wsgi_app = ProxyFix(app.wsgi_app, x_prefix=1)
 
 
 db.init_app(app)
